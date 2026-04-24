@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | BizManager OS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="flex-between">
+        <h1 class="forest-text">Settings</h1>
+        <button onclick="toggleDarkMode()" style="background:none; border:none; font-size:22px; cursor:pointer;">🌓</button>
+        <a href="index.html" class="forest-text" style="text-decoration:none;">← Home</a>
+    </nav>
+
+    <div class="card">
+        <h2 class="forest-text" style="font-size:1rem;">Business Branding</h2>
+        <input type="text" id="bizNameInput" placeholder="Enter Business Name (e.g. Ajeje Stitches)">
+        <button class="btn-main" onclick="saveSettings()">Save Changes</button>
+    </div>
+
+    <div class="card">
+        <h2 class="forest-text" style="font-size:1rem;">Data Management</h2>
+        <p style="font-size:12px; opacity:0.7; margin-bottom:15px;">Keep your business data safe. Download a backup or restore from a previous one.</p>
+        
+        <button class="btn-main" style="background:#64748b;" onclick="exportData()">📥 Download Backup (.json)</button>
+        
+        <div style="margin-top:15px;">
+            <label style="font-size:12px; font-weight:bold;">Restore from File:</label>
+            <input type="file" id="importFile" onchange="importData(event)" style="border:none; padding:10px 0;">
+        </div>
+    </div>
+<p style="text-align: center; font-size: 12px; opacity: 0.5;">© 2026 codedhans. Built with precision.</p>
+    <script src="script.js"></script>
+    <script>
+        // Pre-fill existing business name
+        document.getElementById('bizNameInput').value = localStorage.getItem('bizName') || "";
+    </script>
+</body>
+  </html>

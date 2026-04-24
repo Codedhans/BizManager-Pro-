@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | BizManager OS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="flex-between">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <a href="index.html" style="text-decoration:none; font-size:24px; color:var(--text);">←</a>
+            <h1 class="forest-text" style="font-size:1.3rem;">Analytics</h1>
+        </div>
+        <button onclick="toggleDarkMode()" style="background:none; border:none; font-size:22px; cursor:pointer;">🌓</button>
+    </nav>
+
+    <div class="grid-2" style="margin-top:20px;">
+        <div class="card" style="border-top: 4px solid var(--forest);">
+            <small>Total Sales</small>
+            <h2 id="stat-sales" class="forest-text">₦0</h2>
+        </div>
+        <div class="card" style="border-top: 4px solid #ef4444;">
+            <small>Total Debt</small>
+            <h2 id="stat-debt" style="color:#ef4444;">₦0</h2>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="forest-text" style="font-size:1rem; margin-bottom:15px;">Stock Overview</h2>
+        <div class="flex-between" style="margin-bottom:10px;">
+            <span>Active Batches:</span>
+            <b id="stat-batches">0</b>
+        </div>
+        <div class="flex-between">
+            <span>Inventory Value:</span>
+            <b id="stat-inv-value">₦0</b>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="forest-text" style="font-size:1rem; margin-bottom:10px;">Recent Activity</h2>
+        <div id="activity-log" style="font-size: 13px; max-height: 200px; overflow-y: auto;">
+            <p style="opacity:0.6;">No recent activity recorded.</p>
+        </div>
+    </div>
+
+    <div style="padding:0 10px;">
+        <button class="btn-main" onclick="openGlobalBroadcast()">📣 Blast Store Update</button>
+    </div>
+<p style="text-align: center; font-size: 12px; opacity: 0.5;">© 2026 codedhans. Built with precision.</p>
+    <script src="script.js"></script>
+    <script>
+        // Specific Dashboard Logic
+        function loadDashboardStats() {
+            // 1. Calculate Sales & Debt
+            const totalSales = bizData.sales.reduce((sum, s) => sum + s.total, 0);
+            const totalDebt = bizData.sales.reduce((sum, s) => sum + s.debt, 0);
+            
+            // 2. Calculate Inventory Value
+            const invValue = bizData.inventory.reduce((sum, i) => sum + (i.cost * i.qty), 0);
+
+            // 3. Update UI
+            document.getElementById('stat-sales').innerText = "₦" + totalSales.toLocaleString();
+            document.getElementById('stat-debt').innerText = "₦" + totalDebt.toLocaleString();
+            document.getElementById('stat-batches').innerText = bizData.inventory.length;
+            document.getElementById('stat-inv-value').innerText = "₦" + invValue.toLocaleString();
+
+            // 4. Activity Log (Last 5 actions)
+            const logContainer = document.getElementById('activity-log');
+            const recentSales = bizData.sales.slice(-5).reverse();
+            
+            if(recentSales.length > 0) {
+                logContainer.innerHTML = recentSales.map(s => `
+                    <div style="border-bottom:1px solid var(--border); padding:8px 0;">
+                        <b>${s.customer}</b> bought ${s.item || 'stock'} <br>
+                        <small style="opacity:0.6">${s.date} - ₦${s.total.toLocaleString()}</small>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Run on load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDashboardStats();
+        });
+    </script>
+</body>
+      </html>

@@ -1,1 +1,195 @@
+:root {
+    --forest: #064e3b;
+    --forest-light: #10b981;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --input-bg: #ffffff;
+    --border: #e2e8f0;
+}
 
+.dark-mode {
+    --bg: #020617;
+    --card: #0f172a;
+    --text: #f1f5f9;
+    --input-bg: #1e293b;
+    --forest: #34d399;
+    --border: #334155;
+}
+
+/* Base Reset */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+
+body { 
+    font-family: 'Inter', system-ui, sans-serif; 
+    background: var(--bg); 
+    color: var(--text); 
+    margin: 0; 
+    padding: 12px;
+    line-height: 1.6;
+    transition: 0.3s ease;
+}
+
+/* Navigation */
+nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 20px; }
+.forest-text { color: var(--forest); font-weight: 800; margin: 0; }
+
+/* Card Styling */
+.card {
+    background: var(--card);
+    padding: 18px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--border);
+}
+
+/* --- THE ORGANIZED INPUT SYSTEM --- */
+
+/* Use this wrapper for every input + mic combo */
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px; /* Consistent vertical spacing */
+}
+
+input, select {
+    flex: 1;
+    height: 50px; /* Standardized height for all inputs */
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--input-bg);
+    color: var(--text);
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+input:focus { border-color: var(--forest); }
+
+/* The Mic Button - Now same height as inputs */
+.mic-btn {
+    width: 50px;
+    height: 50px;
+    background: var(--forest);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0; /* Prevents button from squishing */
+}
+
+/* Grid for 2-column inputs (Qty, Cost, etc.) */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr ;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* Buttons */
+.btn-main {
+    width: 100%;
+    height: 54px;
+    background: var(--forest);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.btn-toggle {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: var(--forest);
+    border: 2px solid var(--forest);
+    border-radius: 14px;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+/* Layout Utilities */
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+/* Receipt Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    padding: 20px;
+}
+
+.receipt-paper {
+    background: #fff;
+    color: #000;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    font-family: 'Courier New', Courier, monospace; /* Classic receipt font */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border-top: 8px solid var(--forest);
+}
+
+.receipt-header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 15px; }
+.receipt-body { margin: 20px 0; }
+.receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.receipt-footer { text-align: center; border-top: 1px dashed #000; padding-top: 15px; font-size: 12px; }
+
+.receipt-btns {
+    display: flex;
+    gap: 10px;
+    max-width: 350px;
+    margin: 20px auto;
+}
+
+.my-img{
+   width: 50%;
+   height: 50%;
+   border-radius: 50%;
+}
+
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    opacity: 0.8;
+}
+
+.empty-state-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.welcome-card {
+    background: var(--forest);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+
+
+/* Desktop View */
+@media (min-width: 768px) {
+    body { max-width: 600px; margin: 0 auto; padding-top: 40px; }
+  }

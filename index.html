@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizManager OS Pro | codedhans</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<div id="welcomeArea"></div>
 
+    <div id="sideMenu" class="side-nav">
+        <button class="close-btn" onclick="toggleMenu()">×</button>
+        <div class="menu-content">
+            <h2 class="forest-text">Menu</h2>
+            <a href="index.html" class="active">🏠 Home</a>
+            <a href="dashboard.html">📊 Dashboard</a>
+    
+            <a href="#" onclick="openGlobalBroadcast()">📣 Send Broadcast</a> <a href="about.html">✨ About Developer</a>
+   <a href="settings.html">⚙️ Settings & Backup</a>
+
+        </div>
+    </div>
+
+    <nav class="flex-between">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button onclick="toggleMenu()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--text);">☰</button>
+            <h1 class="forest-text" style="font-size:1.3rem;">BizManager <span style="font-weight:300">OS</span></h1>
+        </div>
+  <button onclick="toggleDarkMode()" style="background:none; border:none; font-size:22px; cursor:pointer;">🌓</button>
+    </nav>
+
+    <div class="card">
+        <h2 class="forest-text"
+        id="bizType" style="font-size:1rem; margin-bottom:15px;">Add New Batch/Stock</h2>
+        
+        <div class="form-group">
+            <input type="text" id="prodName" placeholder="Product Name">
+            <button class="mic-btn" onclick="startListening('prodName')">🎤</button>
+        </div>
+
+        <div class="grid-2">
+            <input type="number" id="qty" placeholder="Qty Stocked">
+            <input type="number" id="damage" placeholder="Loss/Damage">
+        </div>
+
+        <div class="grid-2">
+            <input type="number" id="costPrice" placeholder="Unit Cost (₦)">
+            <input type="number" id="logistics" placeholder="Logistics (₦)">
+        </div>
+
+        <div class="form-group">
+            <input type="number" id="sellPrice" placeholder="Target Selling Price (₦)">
+        </div>
+
+        <div class="form-group">
+            <div style="width:100%">
+                <label style="font-size: 11px; opacity: 0.7; margin-left: 5px;">Maturity/Expiry Date</label>
+                <input type="date" id="maturityDate">
+            </div>
+        </div>
+        
+        <button class="btn-main" onclick="addStock()">Save Product Batch</button>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #2563eb;">
+        <h2 class="forest-text" style="color:#2563eb; font-size:1rem; margin-bottom:15px;">Record New Sale</h2>
+        
+        <div class="form-group">
+            <input type="text" id="custName" placeholder="Customer Name">
+            <button class="mic-btn" style="background:#2563eb" onclick="startListening('custName')">🎤</button>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="soldItem" placeholder="Item Sold (e.g. 50 Birds)">
+        </div>
+
+        <div class="grid-2">
+            <input type="number" id="totalBill" placeholder="Total Bill (₦)">
+            <input type="number" id="amtPaid" placeholder="Amount Paid (₦)">
+        </div>
+
+        <button class="btn-main" style="background:#2563eb" onclick="addSale()">Generate & Save Receipt</button>
+    </div>
+
+    <hr style="margin:25px 0; border:0; border-top:1.5px solid var(--border)">
+
+    <button class="btn-toggle" onclick="toggleSection('inventorySection')">View Inventory Management ▼</button>
+    <div id="inventorySection" style="display:none">
+        <div id="inventoryList"></div>
+    </div>
+
+    <button class="btn-toggle" style="color:#2563eb; border-color:#2563eb" onclick="toggleSection('salesSection')">View Sales & Debt Records ▼</button>
+    <div id="salesSection" style="display:none">
+        <div id="salesList"></div>
+    </div>
+
+    <style>
+        .side-nav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: var(--card);
+            overflow-x: hidden;
+            transition: 0.4s;
+            padding-top: 60px;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+        }
+
+        .menu-content { padding: 20px; }
+        
+        .side-nav a {
+            padding: 15px 0;
+            text-decoration: none;
+            font-size: 18px;
+            color: var(--text);
+            display: block;
+            border-bottom: 1px solid var(--border);
+            font-weight: 500;
+        }
+
+        .side-nav a.active { color: var(--forest); font-weight: 700; }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 36px;
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .btn-circle { cursor: pointer; }
+    </style>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById("sideMenu");
+            menu.style.width = menu.style.width === "280px" ? "0" : "280px";
+        }
+
+        // Close menu if clicking outside
+        window.onclick = function(event) {
+            const menu = document.getElementById("sideMenu");
+            if (event.target == menu) {
+                menu.style.width = "0";
+            }
+        }
+    </script>
+
+    <script src="script.js"></script>
+    <div id="receiptModal" class="modal">
+    <div id="printableReceipt" class="receipt-paper">
+        <div class="receipt-header">
+            <h2 id="r-bizName" style="margin:0;">BIZ NAME</h2>
+            <small id="r-date">00/00/0000</small>
+        </div>
+        <div class="receipt-body">
+            <div class="receipt-row"><span>Customer:</span> <b id="r-cust">---</b></div>
+            <div class="receipt-row"><span>Item:</span> <b id="r-item">---</b></div>
+            <hr style="border:none; border-top:1px dashed #000;">
+            <div class="receipt-row"><span>Total Bill:</span> <b>₦<span id="r-total">0</span></b></div>
+            <div class="receipt-row"><span>Amount Paid:</span> <b>₦<span id="r-paid">0</span></b></div>
+            <div class="receipt-row" style="font-size:1.2rem;"><span>Balance:</span> <b id="r-debt">₦0</b></div>
+        </div>
+        <div class="receipt-footer">
+            <p>Thank you for your patronage!</p>
+            <small>Generated by BizManager OS</small>
+        </div>
+    </div>
+    <div class="receipt-btns">
+        <button class="btn-main" onclick="closeReceipt()" style="background:#64748b;">Close</button>
+        <button class="btn-main" onclick="window.print()">Download/Print</button>
+    </div>
+</div>
+
+<p style="text-align: center; font-size: 12px; opacity: 0.5;">© 2026 codedhans. Built with precision.</p>
+</body>
+                                                                                                      </html>
